@@ -1,99 +1,176 @@
 <div class="dashboard-container">
   <nav class="dashboard-nav">
     <div class="nav-brand">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-        <line x1="16" y1="2" x2="16" y2="6"></line>
-        <line x1="8" y1="2" x2="8" y2="6"></line>
-        <line x1="3" y1="10" x2="21" y2="10"></line>
+      <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="10" width="32" height="32" rx="4" fill="url(#gradient1)" />
+        <rect x="8" y="10" width="32" height="32" rx="4" stroke="url(#gradient2)" stroke-width="2" />
+        <line x1="14" y1="4" x2="14" y2="12" stroke="#6366f1" stroke-width="3" stroke-linecap="round" />
+        <line x1="34" y1="4" x2="34" y2="12" stroke="#6366f1" stroke-width="3" stroke-linecap="round" />
+        <line x1="8" y1="18" x2="40" y2="18" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" />
+        <circle cx="18" cy="28" r="2.5" fill="white" />
+        <circle cx="24" cy="28" r="2.5" fill="white" />
+        <circle cx="30" cy="28" r="2.5" fill="white" />
+        <circle cx="18" cy="35" r="2.5" fill="white" />
+        <circle cx="24" cy="35" r="2.5" fill="white" />
+        <defs>
+          <linearGradient id="gradient1" x1="8" y1="10" x2="40" y2="42" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#8b5cf6" />
+            <stop offset="0.5" stop-color="#6366f1" />
+            <stop offset="1" stop-color="#3b82f6" />
+          </linearGradient>
+          <linearGradient id="gradient2" x1="8" y1="10" x2="40" y2="42" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#a78bfa" />
+            <stop offset="1" stop-color="#60a5fa" />
+          </linearGradient>
+        </defs>
       </svg>
       <span>EventPlanner</span>
     </div>
-    <button class="btn-logout" (click)="logout()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-        <polyline points="16 17 21 12 16 7"></polyline>
-        <line x1="21" y1="12" x2="9" y2="12"></line>
-      </svg>
-      Logout
-    </button>
+    <div class="nav-actions">
+      <button class="btn-search" (click)="navigateToSearch()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        Search Events
+      </button>
+      <button class="btn-logout" (click)="logout()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Logout
+      </button>
+    </div>
   </nav>
 
   <div class="dashboard-content">
     <div class="welcome-section">
-      <h1>Welcome to EventPlanner! 🎉</h1>
-      <p class="subtitle">Phase 0 - Authentication Complete</p>
+      <h1>My Events Dashboard</h1>
+      <p class="subtitle">Manage and track all your events</p>
     </div>
 
-    <div class="cards-grid">
-      <div class="info-card">
-        <div class="card-icon success">
+    <!-- Organized Events Section -->
+    <section class="events-section">
+      <div class="section-header">
+        <h2>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="20 6 9 17 4 12"></polyline>
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
           </svg>
+          Events I Organize
+        </h2>
+        <div class="section-actions">
+          <span class="badge">{{ organizedEvents.length }}</span>
+          <button class="btn-create-compact" (click)="navigateToCreateEvent()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Create Event
+          </button>
         </div>
-        <h3>Successfully Logged In</h3>
-        <p>You're authenticated and ready to go!</p>
       </div>
 
-      <div class="info-card">
-        <div class="card-icon info">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-        </div>
-        <h3>Phase 0 Complete</h3>
-        <p>User authentication system is working</p>
+      <div *ngIf="isLoadingOrganized" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading events...</p>
       </div>
 
-      <div class="info-card">
-        <div class="card-icon upcoming">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="16" y1="2" x2="16" y2="6"></line>
-            <line x1="8" y1="2" x2="8" y2="6"></line>
-            <line x1="3" y1="10" x2="21" y2="10"></line>
-          </svg>
-        </div>
-        <h3>Coming Soon</h3>
-        <p>Event management features in Phase 1</p>
+      <div *ngIf="!isLoadingOrganized && organizedEvents.length === 0" class="empty-state">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <h3>No organized events yet</h3>
+        <p>Create your first event to get started!</p>
       </div>
-    </div>
 
-    <div class="feature-preview">
-      <h2>What's Next?</h2>
-      <div class="features-list">
-        <div class="feature-item">
-          <span class="feature-number">1</span>
-          <div>
-            <h4>Event Creation</h4>
-            <p>Create and manage your events with ease</p>
+      <div *ngIf="!isLoadingOrganized && organizedEvents.length > 0" class="events-grid">
+        <div *ngFor="let event of organizedEvents" class="event-card organizer"
+          (click)="navigateToEventDetails(event.id)">
+          <div class="event-card-header">
+            <span class="event-role organizer-badge">Organizer</span>
+            <span class="event-date">{{ event.date }}</span>
           </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-number">2</span>
-          <div>
-            <h4>Invite Attendees</h4>
-            <p>Send invitations and track responses</p>
+          <h3>{{ event.title }}</h3>
+          <div class="event-details">
+            <div class="detail-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              {{ event.time }}
+            </div>
+            <div class="detail-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              {{ event.location }}
+            </div>
           </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-number">3</span>
-          <div>
-            <h4>Response Management</h4>
-            <p>Monitor attendance status for all events</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-number">4</span>
-          <div>
-            <h4>Search & Filter</h4>
-            <p>Find events quickly with advanced search</p>
-          </div>
+          <p class="event-description">{{ event.description }}</p>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Invited Events Section -->
+    <section class="events-section">
+      <div class="section-header">
+        <h2>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Events I'm Invited To
+        </h2>
+        <span class="badge">{{ invitedEvents.length }}</span>
+      </div>
+
+      <div *ngIf="isLoadingInvited" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading invitations...</p>
+      </div>
+
+      <div *ngIf="!isLoadingInvited && invitedEvents.length === 0" class="empty-state">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <h3>No invitations yet</h3>
+        <p>You'll see events here when someone invites you</p>
+      </div>
+
+      <div *ngIf="!isLoadingInvited && invitedEvents.length > 0" class="events-grid">
+        <div *ngFor="let event of invitedEvents" class="event-card attendee" (click)="navigateToEventDetails(event.id)">
+          <div class="event-card-header">
+            <span class="event-role attendee-badge">Invited</span>
+            <span class="event-date">{{ event.date }}</span>
+          </div>
+          <h3>{{ event.title }}</h3>
+          <div class="event-details">
+            <div class="detail-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              {{ event.time }}
+            </div>
+            <div class="detail-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              {{ event.location }}
+            </div>
+          </div>
+          <p class="event-description">{{ event.description }}</p>
+        </div>
+      </div>
+    </section>
   </div>
 </div>

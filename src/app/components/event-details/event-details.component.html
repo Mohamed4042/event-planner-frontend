@@ -1,0 +1,162 @@
+<div class="page-container">
+  <div class="page-header">
+    <button class="btn-back" (click)="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back
+    </button>
+    <h1>Event Details</h1>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading event details...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="details-container">
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <!-- Organizer Actions -->
+    <div *ngIf="isOrganizer" class="organizer-section">
+      <h2>Organizer Controls</h2>
+
+      <div class="action-card">
+        <h3>Invite Attendees</h3>
+        <div class="invite-form">
+          <div class="invite-method-selector">
+            <label class="method-option" [class.active]="inviteMethod === 'email'">
+              <input type="radio" [(ngModel)]="inviteMethod" value="email" name="inviteMethod" />
+              <span class="method-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                By Email
+              </span>
+            </label>
+            <label class="method-option" [class.active]="inviteMethod === 'id'">
+              <input type="radio" [(ngModel)]="inviteMethod" value="id" name="inviteMethod" />
+              <span class="method-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                By User ID
+              </span>
+            </label>
+          </div>
+
+          <input *ngIf="inviteMethod === 'email'" type="email" [(ngModel)]="inviteUserEmail"
+            placeholder="Enter user email" class="input-field" />
+
+          <input *ngIf="inviteMethod === 'id'" type="number" [(ngModel)]="inviteUserId" placeholder="Enter User ID"
+            class="input-field" />
+
+          <button class="btn-primary btn-invite" (click)="inviteUser()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <line x1="19" y1="8" x2="19" y2="14"></line>
+              <line x1="22" y1="11" x2="16" y2="11"></line>
+            </svg>
+            Send Invitation
+          </button>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="attendees-header">
+          <h3>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            Attendees
+          </h3>
+          <span class="attendees-count">{{ attendees.length }}</span>
+        </div>
+        <div class="attendees-list">
+          <div *ngFor="let attendee of attendees" class="attendee-card">
+            <div class="attendee-main">
+              <div class="attendee-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <div class="attendee-info">
+                <div class="attendee-name">User #{{ attendee.user_id }}</div>
+                <div class="attendee-role" [class.role-organizer]="attendee.role === 'organizer'"
+                  [class.role-attendee]="attendee.role === 'attendee'">
+                  <svg *ngIf="attendee.role === 'organizer'" width="10" height="10" viewBox="0 0 24 24"
+                    fill="currentColor">
+                    <polygon
+                      points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                    </polygon>
+                  </svg>
+                  {{ attendee.role }}
+                </div>
+              </div>
+            </div>
+            <div *ngIf="attendee.role === 'attendee'" class="status-badge"
+              [class.badge-going]="attendee.status === 'Going'" [class.badge-maybe]="attendee.status === 'Maybe'"
+              [class.badge-not-going]="attendee.status === 'Not Going'" [class.badge-pending]="!attendee.status">
+              <span class="status-indicator"></span>
+              {{ attendee.status || 'Pending' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-card danger">
+        <div class="danger-content">
+          <div class="danger-copy">
+            <div class="danger-icon">!</div>
+            <div>
+              <h3>Danger Zone</h3>
+              <p>Delete this event permanently. This action cannot be undone.</p>
+            </div>
+          </div>
+          <button class="btn-danger" (click)="deleteEvent()">
+            Delete Event
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Attendee Actions -->
+    <div *ngIf="!isOrganizer" class="attendee-section">
+      <h2>Update Your Response</h2>
+
+      <div class="action-card">
+        <div class="status-selector">
+          <label>
+            <input type="radio" [(ngModel)]="selectedStatus" value="Going" name="status" />
+            <span class="status-option going">✓ Going</span>
+          </label>
+          <label>
+            <input type="radio" [(ngModel)]="selectedStatus" value="Maybe" name="status" />
+            <span class="status-option maybe">? Maybe</span>
+          </label>
+          <label>
+            <input type="radio" [(ngModel)]="selectedStatus" value="Not Going" name="status" />
+            <span class="status-option not-going">✕ Not Going</span>
+          </label>
+        </div>
+        <button class="btn-primary" (click)="updateAttendance()">
+          Update Response
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
